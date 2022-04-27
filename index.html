@@ -24,12 +24,12 @@
       function sendClickToServer() {
         let trackData = {trackid: "12345"}; // you can probably put your coldfusion tags here?
         fetch(
-          "https://billythekid.github.io/audio-counter-example/5.html", // relative URL
-          {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(trackData)
-          }
+          "https://billythekid.github.io/audio-counter-example/5.html",
+          // {
+          //   method: "POST",
+          //   headers: {"Content-Type": "application/json"},
+          //   body: JSON.stringify(trackData)
+          // }
         ).then((response) => {
           // res is the response from the 'add_playcount' page, you can dump it in the console to see what it contains but we don't really need to use it here unless you want to get fancy, maybe send back the new updated count and update a live view or something?
           console.log("Response: ", response);
