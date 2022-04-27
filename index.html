@@ -6,6 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="icon" class="js-site-favicon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
     <title>Audio Player</title>
+    <style>
+      #unsendable {
+        color: darkred;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
   </head>
 
   <body>
@@ -16,41 +24,36 @@
 
     <p>Plays: <span id="counter">4</span></p>
 
-    <p>Music: <a href="https://www.bensound.com">https://www.bensound.com</a></p>
+    <p>Status: Will <span id="unsendable" class="hidden">not </span>record a click.</p>
 
     <pre></pre>
 
+    <p>Music: <a href="https://www.bensound.com">https://www.bensound.com</a></p>
+
     <script>
       function sendClickToServer() {
-        let trackData = {trackid: "12345"}; // you can probably put your coldfusion tags here?
+        theAbility.classList.remove("hidden");
         fetch(
-          "https://billythekid.github.io/audio-counter-example/5.html",
-          // {
-          //   method: "POST",
-          //   headers: {"Content-Type": "application/json"},
-          //   body: JSON.stringify(trackData)
-          // }
+          "https://billythekid.github.io/audio-counter-example/5.html" // GET request because GitHub Pages doesn't support POSTs
         ).then((response) => {
-          // res is the response from the 'add_playcount' page, you can dump it in the console to see what it contains but we don't really need to use it here unless you want to get fancy, maybe send back the new updated count and update a live view or something?
           console.log("Response: ", response);
-          // we could trigger the re-adding here if you wanted.
-          // for example:
           setTimeout(
             function () {
               thePlayer.addEventListener("play", sendClickToServer, {once: true});
+              theAbility.classList.add("hidden");
             },
             5000 // after 30 seconds
           );
           return response.text().then((bodyText) => {
-            document.querySelector("span").textContent = bodyText;
+            theCounter.textContent = bodyText;
           });
 
         });
       }
 
-      // find the media player
       const thePlayer = document.querySelector("audio");
-
+      const theCounter = document.querySelector("span");
+      const theAbility = document.querySelector("#unsendable");
       thePlayer.addEventListener("play", sendClickToServer, {once: true});
 
     </script>
