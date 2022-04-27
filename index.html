@@ -34,7 +34,8 @@
       function sendClickToServer() {
         theAbility.classList.remove("hidden");
         fetch(
-          "https://billythekid.github.io/audio-counter-example/5.html" // GET request because GitHub Pages doesn't support POSTs
+          // this endpoint always returns the number 5
+          "https://billythekid.github.io/audio-counter-example/5.html" // GET request because GitHub Pages doesn't support POSTs.
         ).then((response) => {
           console.log("Response: ", response);
           setTimeout(
@@ -42,10 +43,13 @@
               thePlayer.addEventListener("play", sendClickToServer, {once: true});
               theAbility.classList.add("hidden");
             },
-            5000 // after 30 seconds
+            5000 // after 5 seconds, because I won't make you wait 30 in an example!
           );
           return response.text().then((bodyText) => {
-            theCounter.textContent = bodyText;
+            // the nexrt line is what you would use to use the response from the page hit above...
+            // theCounter.textContent = bodyText;
+            // ... but since that's always the number 5 here we'll just add 1 to whatever the number is currently showing
+            theCounter.textContent++;
           });
 
         });
