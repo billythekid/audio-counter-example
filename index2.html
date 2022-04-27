@@ -33,7 +33,9 @@
     </audio>
 
     <p>Plays: <span id="counter">4</span></p>
-    <p><small>Note: This should change to an error - that's the response we expect from the GitHub Pages server when we send a POST request!</small></p>
+    <p>
+      <small>Note: This should change to an error - that's the response we expect from the GitHub Pages server when we send a POST request!</small>
+    </p>
     <p>Status: <span id="ability">WILL </span>
       <span id="inability" class="hidden">WILL NOT </span>record a click of the PLAY button.</p>
 
@@ -50,6 +52,7 @@
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(trackData)
+          }
         ).then((response) => {
           setTimeout(
             function () {
@@ -67,18 +70,18 @@
         });
       }
 
-        const thePlayer = document.querySelector("audio");
-        const theCounter = document.getElementById("counter");
-        const theAbility = document.getElementById("ability");
-        const theInability = document.getElementById("inability");
+      const thePlayer = document.querySelector("audio");
+      const theCounter = document.getElementById("counter");
+      const theAbility = document.getElementById("ability");
+      const theInability = document.getElementById("inability");
 
-        thePlayer.addEventListener("play", sendClickToServer, {once: true});
+      thePlayer.addEventListener("play", sendClickToServer, {once: true});
 
-        // This function shows us if we can currently send a click to be recorded
-        function toggleTheAbilityDisplay() {
-          theAbility.classList.toggle("hidden")
-          theInability.classList.toggle("hidden");
-        }
+      // This function shows us if we can currently send a click to be recorded
+      function toggleTheAbilityDisplay() {
+        theAbility.classList.toggle("hidden")
+        theInability.classList.toggle("hidden");
+      }
     </script>
 
   </body>
