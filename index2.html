@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="icon" class="js-site-favicon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
+    <title>Audio Player 2</title>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      #ability {
+        color: green;
+      }
+
+      #inability {
+        color: darkred;
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Audio Example</h1>
+    <audio controls src="https://billythekid.github.io/audio-counter-example/bensound-sunny.mp3">
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+
+    <p>Plays: <span id="counter">4</span></p>
+    <p><small>Note: This should change to an error - that's the response we expect from the GitHub Pages server when we send a POST request!</small></p>
+    <p>Status: <span id="ability">WILL </span>
+      <span id="inability" class="hidden">WILL NOT </span>record a click of the PLAY button.</p>
+
+    <p>Music: <a href="https://www.bensound.com">https://www.bensound.com</a></p>
+
+    <p>Source code: https://github.com/billythekid/audio-counter-example</p>
+
+    <script>
+      function sendClickToServer() {
+        let trackData = {trackid: "<cfoutput>#track_id#</cfoutput>"};
+        toggleTheAbilityDisplay();
+        fetch(
+          "https://billythekid.github.io/audio-counter-example/5.html", {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(trackData)
+        ).then((response) => {
+          setTimeout(
+            function () {
+              thePlayer.addEventListener("play", sendClickToServer, {once: true});
+              toggleTheAbilityDisplay();
+            },
+            5000 // after 5 seconds, because I won't make you wait 30 in an example!
+          );
+          return response.text().then((bodyText) => {
+            // GitHub Pages doesn't support POST requests
+            // so this should actually show an error now!
+            theCounter.textContent = bodyText;
+          });
+
+        });
+      }
+
+        const thePlayer = document.querySelector("audio");
+        const theCounter = document.getElementById("counter");
+        const theAbility = document.getElementById("ability");
+        const theInability = document.getElementById("inability");
+
+        thePlayer.addEventListener("play", sendClickToServer, {once: true});
+
+        // This function shows us if we can currently send a click to be recorded
+        function toggleTheAbilityDisplay() {
+          theAbility.classList.toggle("hidden")
+          theInability.classList.toggle("hidden");
+        }
+    </script>
+
+  </body>
+</html>
