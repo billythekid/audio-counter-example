@@ -9,7 +9,7 @@
       function sendClickToServer() {
         let trackData = {trackid: "12345"}; // you can probably put your coldfusion tags here?
         fetch(
-          "./5.html",
+          "https://billythekid.github.io/audio-counter-example/5.html", // relative URL
           {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -44,7 +44,7 @@
     </script>
   </head>
   <body>
-    <audio controls src="./bensound-sunny.mp3">
+    <audio controls src="https://billythekid.github.io/audio-counter-example/bensound-sunny.mp3">
       Your browser does not support the
       <code>audio</code> element.
     </audio>
