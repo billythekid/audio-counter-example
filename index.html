@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Audio Player</title>
+    <script>
+      function sendClickToServer() {
+        let trackData = {trackid: "12345"}; // you can probably put your coldfusion tags here?
+        fetch(
+          "/5.html",
+          {
+            method: "POST",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(trackData)
+          }
+        ).then((response) => {
+          // res is the response from the 'add_playcount' page, you can dump it in the console to see what it contains but we don't really need to use it here unless you want to get fancy, maybe send back the new updated count and update a live view or something?
+          console.log("Response: ", response);
+          // we could trigger the re-adding here if you wanted.
+          // for example:
+          setTimeout(
+            function () {
+              thePlayer.addEventListener("play", sendClickToServer, {once: true});
+            },
+            5000 // after 30 seconds
+          );
+          return response.text().then((bodyText) => {
+            document.querySelector("span").textContent = bodyText;
+          });
+
+        });
+      }
+
+      // find the media player
+      const thePlayer = document.querySelector("audio");
+
+      thePlayer.addEventListener("play", sendClickToServer, {once: true});
+
+    </script>
+    <script>
+      document.querySelector("code").textContent = document.querySelector("script").textContent;
+    </script>
+  </head>
+  <body>
+    <audio controls src="/bensound-sunny.mp3">
+      Your browser does not support the
+      <code>audio</code> element.
+    </audio>
+
+    <p>Plays: <span id="counter">4</span></p>
+
+    <p>Music: <a href="https://www.bensound.com">https://www.bensound.com</a></p>
+
+    <code></code>
+
+  </body>
+</html>
