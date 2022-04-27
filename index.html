@@ -7,9 +7,18 @@
     <link rel="icon" class="js-site-favicon" type="image/svg+xml" href="https://github.githubassets.com/favicons/favicon.svg">
     <title>Audio Player</title>
     <style>
-      #unsendable {
+      body {
+        font-family: sans-serif;
+      }
+
+      #ability {
+        color: green;
+      }
+
+      #inability {
         color: darkred;
       }
+
       .hidden {
         display: none;
       }
@@ -17,6 +26,7 @@
   </head>
 
   <body>
+    <h1>Audio Example</h1>
     <audio controls src="https://billythekid.github.io/audio-counter-example/bensound-sunny.mp3">
       Your browser does not support the
       <code>audio</code> element.
@@ -24,7 +34,7 @@
 
     <p>Plays: <span id="counter">4</span></p>
 
-    <p>Status: Will <span id="unsendable" class="hidden">not </span>record a click.</p>
+    <p>Status: <span id="ability">WILL </span> <span id="inability" class="hidden">WILL NOT </span>record a click.</p>
 
     <pre></pre>
 
@@ -32,23 +42,22 @@
 
     <script>
       function sendClickToServer() {
-        theAbility.classList.remove("hidden");
+        toggleTheAbilityDisplay();
         fetch(
           // this endpoint always returns the number 5
           "https://billythekid.github.io/audio-counter-example/5.html" // GET request because GitHub Pages doesn't support POSTs.
         ).then((response) => {
-          console.log("Response: ", response);
           setTimeout(
             function () {
               thePlayer.addEventListener("play", sendClickToServer, {once: true});
-              theAbility.classList.add("hidden");
+              toggleTheAbilityDisplay();
             },
             5000 // after 5 seconds, because I won't make you wait 30 in an example!
           );
           return response.text().then((bodyText) => {
-            // the nexrt line is what you would use to use the response from the page hit above...
+            // the next line is what you would use to use the response from the page hit above...
             // theCounter.textContent = bodyText;
-            // ... but since that's always the number 5 here we'll just add 1 to whatever the number is currently showing
+            // ...but since that's always the number 5 here we'll just add 1 to whatever the number is currently showing
             theCounter.textContent++;
           });
 
@@ -56,10 +65,17 @@
       }
 
       const thePlayer = document.querySelector("audio");
-      const theCounter = document.querySelector("span");
-      const theAbility = document.querySelector("#unsendable");
+      const theCounter = document.getElementById("counter");
+      const theAbility = document.getElementById("ability");
+      const theInability = document.getElementById("inability");
+
       thePlayer.addEventListener("play", sendClickToServer, {once: true});
 
+      // This function shows us if we can currently send a click to be recorded
+      function toggleTheAbilityDisplay() {
+        theAbility.classList.toggle("hidden")
+        theInability.classList.toggle("hidden");
+      }
     </script>
     <script>
       document.querySelector("pre").innerText = document.querySelector("script").innerHTML;
